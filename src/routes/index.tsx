@@ -486,12 +486,11 @@ function Speakers() {
               key={s.name}
               className="flex gap-5 rounded-xl border border-border bg-card p-6 transition-colors hover:border-[var(--teal)]"
             >
-              <div
-                className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-xl font-black text-primary-foreground"
-                style={{ background: "var(--gradient-cta)" }}
-              >
-                {s.initials}
-              </div>
+              <img
+                src={s.photo}
+                alt={s.name}
+                className="h-20 w-20 shrink-0 rounded-full object-cover object-top ring-2 ring-[var(--teal)]/40"
+              />
               <div>
                 <h3 className="text-lg font-bold">{s.name}</h3>
                 <div className="text-xs font-medium text-[var(--teal-light)]">
