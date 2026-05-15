@@ -731,19 +731,23 @@ function Footer() {
 }
 
 function GrowthDayLanding() {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
-    <main className="min-h-screen bg-background text-foreground">
-      <UrgencyBar />
-      <Hero />
-      <PainSection />
-      <WhatIs />
-      <Themes />
-      <Speakers />
-      <Offer />
-      <Logistics />
-      <FAQ />
-      <FinalCTA />
-      <Footer />
-    </main>
+    <LeadModalContext.Provider value={{ open: () => setModalOpen(true) }}>
+      <main className="min-h-screen bg-background text-foreground">
+        <UrgencyBar />
+        <Hero />
+        <PainSection />
+        <WhatIs />
+        <Themes />
+        <Speakers />
+        <Offer />
+        <Logistics />
+        <FAQ />
+        <FinalCTA />
+        <Footer />
+      </main>
+      <LeadModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+    </LeadModalContext.Provider>
   );
 }
