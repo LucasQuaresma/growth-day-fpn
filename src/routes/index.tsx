@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, createContext, useContext } from "react";
-import heroStage from "@/assets/hero-stage.jpg";
+import heroStage from "@/assets/fpn/fpn-bg.png";
+import mentorEvandro from "@/assets/fpn/mentor-evandro.jpg";
+import mentorTiago from "@/assets/fpn/mentor-tiago.jpg";
+import mentorMarcelo from "@/assets/fpn/mentor-marcelo.jpg";
+import mentorFelipe from "@/assets/fpn/mentor-felipe.jpg";
 import {
   Calendar,
   MapPin,
