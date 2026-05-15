@@ -232,25 +232,8 @@ function UrgencyBar() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src={heroStage}
-          alt="Palco do evento Growth Day"
-          width={1600}
-          height={1000}
-          className="h-full w-full object-cover opacity-30"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, oklch(0.18 0.07 260 / 0.7) 0%, oklch(0.22 0.08 260 / 0.95) 80%, var(--navy)) 100%)",
-          }}
-        />
-      </div>
-
-      <div className="relative mx-auto max-w-5xl px-4 pb-20 pt-16 sm:pt-24 lg:pb-28 lg:pt-32 text-center">
+    <section className="relative overflow-hidden bg-[var(--navy-deep)]">
+      <div className="relative mx-auto max-w-5xl px-4 pb-16 pt-12 sm:pt-16 lg:pb-20 lg:pt-20 text-center">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--teal)] bg-[var(--teal)]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--teal-light)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--teal-light)] animate-pulse" />
           Growth Day FPN Health · 2025
