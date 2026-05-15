@@ -250,6 +250,16 @@ function Hero() {
           trabalhar muito e lucrar pouco.
         </p>
 
+        <div className="mt-10 overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-glow)]">
+          <img
+            src={heroStage}
+            alt="Palco do evento Growth Day FPN Health"
+            width={1600}
+            height={900}
+            className="h-auto w-full object-cover"
+          />
+        </div>
+
         <div className="mt-8 flex flex-col items-center gap-4">
           <CTAButton>Quero garantir minha vaga · R$ 197</CTAButton>
           <p className="text-xs text-muted-foreground">
