@@ -61,16 +61,18 @@ function CTAButton({
 }) {
   const { open } = useContext(LeadModalContext);
   return (
-    <button
-      type="button"
-      onClick={open}
-      className={`mx-auto inline-flex w-full max-w-sm items-center justify-center rounded-md font-bold uppercase tracking-wide text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] sm:w-auto ${
-        size === "lg" ? "px-8 py-4 text-base sm:text-lg" : "px-6 py-3 text-sm"
-      }`}
-      style={{ background: "var(--gradient-cta)" }}
-    >
-      {children}
-    </button>
+    <div className="flex w-full justify-center">
+      <button
+        type="button"
+        onClick={open}
+        className={`inline-flex w-full max-w-sm items-center justify-center rounded-md font-bold uppercase tracking-wide text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] sm:w-auto ${
+          size === "lg" ? "px-8 py-4 text-base sm:text-lg" : "px-6 py-3 text-sm"
+        }`}
+        style={{ background: "var(--gradient-cta)" }}
+      >
+        {children}
+      </button>
+    </div>
   );
 }
 
