@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, createContext, useContext } from "react";
-import heroStage from "@/assets/hero-stage.jpg";
+import heroStage from "@/assets/fpn/fpn-bg.png";
+import mentorEvandro from "@/assets/fpn/mentor-evandro.jpg";
+import mentorTiago from "@/assets/fpn/mentor-tiago.jpg";
+import mentorMarcelo from "@/assets/fpn/mentor-marcelo.jpg";
+import mentorFelipe from "@/assets/fpn/mentor-felipe.jpg";
 import {
   Calendar,
   MapPin,
@@ -443,25 +447,25 @@ function Speakers() {
       name: "Evandro Guedes",
       role: "Empresário",
       bio: "14 empresas fundadas. R$ 1,4 bilhão em faturamento acumulado. Cases de fusão e venda — agora aplicados ao mercado médico.",
-      initials: "EG",
+      photo: mentorEvandro,
     },
     {
       name: "Dr. Tiago Simão",
       role: "Cirurgião Plástico · CRM 137.398 · RQE 54367",
       bio: "1º lugar no Título de Especialista SBCP. Membro Pleno da SBCP. Fellowships nos EUA, Turquia e Colômbia. Especialista em Lipo HD e Contorno Corporal.",
-      initials: "TS",
+      photo: mentorTiago,
     },
     {
       name: "Dr. Marcelo Nogueira",
       role: "Transplante Capilar · CRM SP 202888",
       bio: "Criador do Método DVN, técnica exclusiva no Brasil. +1.500 transplantes realizados, +350 médicos formados. Destaque em Veja, O Globo e IsToÉ.",
-      initials: "MN",
+      photo: mentorMarcelo,
     },
     {
       name: "Felipe Muzitano",
       role: "CEO Side Growth · Marketing e Vendas",
       bio: "Mais de 350 clínicas assessoradas. Especialista em processo comercial e marketing digital para o mercado médico.",
-      initials: "FM",
+      photo: mentorFelipe,
     },
   ];
   return (
@@ -482,12 +486,11 @@ function Speakers() {
               key={s.name}
               className="flex gap-5 rounded-xl border border-border bg-card p-6 transition-colors hover:border-[var(--teal)]"
             >
-              <div
-                className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-xl font-black text-primary-foreground"
-                style={{ background: "var(--gradient-cta)" }}
-              >
-                {s.initials}
-              </div>
+              <img
+                src={s.photo}
+                alt={s.name}
+                className="h-20 w-20 shrink-0 rounded-full object-cover object-top ring-2 ring-[var(--teal)]/40"
+              />
               <div>
                 <h3 className="text-lg font-bold">{s.name}</h3>
                 <div className="text-xs font-medium text-[var(--teal-light)]">
