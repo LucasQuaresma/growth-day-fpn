@@ -447,25 +447,25 @@ function Speakers() {
       name: "Evandro Guedes",
       role: "Empresário",
       bio: "14 empresas fundadas. R$ 1,4 bilhão em faturamento acumulado. Cases de fusão e venda — agora aplicados ao mercado médico.",
-      initials: "EG",
+      photo: mentorEvandro,
     },
     {
       name: "Dr. Tiago Simão",
       role: "Cirurgião Plástico · CRM 137.398 · RQE 54367",
       bio: "1º lugar no Título de Especialista SBCP. Membro Pleno da SBCP. Fellowships nos EUA, Turquia e Colômbia. Especialista em Lipo HD e Contorno Corporal.",
-      initials: "TS",
+      photo: mentorTiago,
     },
     {
       name: "Dr. Marcelo Nogueira",
       role: "Transplante Capilar · CRM SP 202888",
       bio: "Criador do Método DVN, técnica exclusiva no Brasil. +1.500 transplantes realizados, +350 médicos formados. Destaque em Veja, O Globo e IsToÉ.",
-      initials: "MN",
+      photo: mentorMarcelo,
     },
     {
       name: "Felipe Muzitano",
       role: "CEO Side Growth · Marketing e Vendas",
       bio: "Mais de 350 clínicas assessoradas. Especialista em processo comercial e marketing digital para o mercado médico.",
-      initials: "FM",
+      photo: mentorFelipe,
     },
   ];
   return (
