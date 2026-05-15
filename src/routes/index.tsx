@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import heroStage from "@/assets/hero-stage.jpg";
 import {
   Calendar,
@@ -14,6 +14,8 @@ import {
   DollarSign,
   Brain,
   Award,
+  X,
+  Loader2,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -36,7 +38,19 @@ export const Route = createFileRoute("/")({
   component: GrowthDayLanding,
 });
 
-const HUBLA_URL = "#"; // substituir pelo link do Hubla
+const HUBLA_URL = "https://pay.hub.la/o6FAUrIfXXi7JXawYql9";
+const WEBHOOK_URL =
+  "https://projeto01-n8n.gmxuno.easypanel.host/webhook/e29fee45-b589-4d23-be68-4700f78aca74";
+const FB_TOKEN =
+  "EAALlfLwenuIBRQZBmnKvMJMmpU6x6auSFKqyGEjdZBmIJzIFpZCFUisoAWbbT3uY1AKDbMHNn5rsGHsVgQFw5aZAbqXvUQqpn4tZBPvDYhgl9hMIhZBXb1pi0ZAa2Gv2q4ZBV772ZAsS9Q7wtk8mTqnkHtPS0dezUcKuOs5O8kSp6iJFSEcajJkIHidsMBia0WifgaQZDZD";
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
+const LeadModalContext = createContext<{ open: () => void }>({ open: () => {} });
 
 function CTAButton({
   children = "Quero garantir minha vaga",
@@ -45,16 +59,148 @@ function CTAButton({
   children?: React.ReactNode;
   size?: "lg" | "md";
 }) {
+  const { open } = useContext(LeadModalContext);
   return (
-    <a
-      href={HUBLA_URL}
-      className={`inline-flex items-center justify-center rounded-md font-bold uppercase tracking-wide text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] ${
+    <button
+      type="button"
+      onClick={open}
+      className={`mx-auto inline-flex w-full max-w-sm items-center justify-center rounded-md font-bold uppercase tracking-wide text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] sm:w-auto ${
         size === "lg" ? "px-8 py-4 text-base sm:text-lg" : "px-6 py-3 text-sm"
       }`}
       style={{ background: "var(--gradient-cta)" }}
     >
       {children}
-    </a>
+    </button>
+  );
+}
+
+function LeadModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      setError("Preencha todos os campos.");
+      return;
+    }
+    setLoading(true);
+    try {
+      window.fbq?.("track", "Lead", { content_name: "Growth Day FPN Health" });
+      await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          source: "growth-day-landing",
+          event: "Growth Day FPN Health",
+          fb_access_token: FB_TOKEN,
+          submitted_at: new Date().toISOString(),
+        }),
+      });
+    } catch (err) {
+      console.error("Webhook submit failed", err);
+    } finally {
+      window.location.href = HUBLA_URL;
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl sm:p-8"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Fechar"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <h3 className="text-balance text-2xl font-black leading-tight">
+          Garanta sua vaga no <span className="text-[var(--teal-light)]">Growth Day</span>
+        </h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Preencha seus dados para continuar para o checkout seguro do Hubla.
+        </p>
+
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+          <div>
+            <label htmlFor="lead-name" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Nome completo
+            </label>
+            <input
+              id="lead-name"
+              type="text"
+              required
+              maxLength={120}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-[var(--teal)]"
+              placeholder="Seu nome"
+            />
+          </div>
+          <div>
+            <label htmlFor="lead-email" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              E-mail
+            </label>
+            <input
+              id="lead-email"
+              type="email"
+              required
+              maxLength={200}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-[var(--teal)]"
+              placeholder="seu@email.com"
+            />
+          </div>
+          <div>
+            <label htmlFor="lead-phone" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              WhatsApp / Telefone
+            </label>
+            <input
+              id="lead-phone"
+              type="tel"
+              required
+              maxLength={30}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-[var(--teal)]"
+              placeholder="(11) 99999-9999"
+            />
+          </div>
+
+          {error && <p className="text-sm text-red-400">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-4 text-base font-bold uppercase tracking-wide text-primary-foreground transition-all hover:scale-[1.02] hover:shadow-[var(--shadow-glow)] disabled:opacity-70"
+            style={{ background: "var(--gradient-cta)" }}
+          >
+            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
+            {loading ? "Enviando..." : "Continuar para o checkout"}
+          </button>
+          <p className="text-center text-xs text-muted-foreground">
+            Pagamento seguro via Hubla · Reembolso em 7 dias
+          </p>
+        </form>
+      </div>
+    </div>
   );
 }
 
