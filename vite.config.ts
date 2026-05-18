@@ -12,4 +12,12 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  vite: {
+    plugins: [
+      {
+        name: "allow-all-hosts",
+        config: () => ({ server: { allowedHosts: true } }),
+      },
+    ],
+  },
 });

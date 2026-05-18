@@ -72,20 +72,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Build custom landing pages with form submission and redirection capabilities." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Build custom landing pages with form submission and redirection capabilities." },
+      { title: "Growth Day FPN Health — 06 de junho · Alphaville/SP" },
+      { name: "description", content: "1 dia presencial para médicos que querem tratar a clínica como negócio. Posicionamento, vendas, marketing e gestão. R$ 197 — vagas limitadas." },
+      { name: "author", content: "FPN Health" },
+      { property: "og:title", content: "Growth Day FPN Health — 06/06/2025" },
+      { property: "og:description", content: "Evento presencial em Alphaville para médicos que querem parar de trabalhar muito e lucrar pouco." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Build custom landing pages with form submission and redirection capabilities." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6a6b5c01-2c65-4db9-a76d-dad48d2ec4e9/id-preview-221dbc9b--8f811568-5da2-4d90-9471-24f50c8911d3.lovable.app-1778868704010.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6a6b5c01-2c65-4db9-a76d-dad48d2ec4e9/id-preview-221dbc9b--8f811568-5da2-4d90-9471-24f50c8911d3.lovable.app-1778868704010.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Growth Day FPN Health — 06/06/2025" },
+      { name: "twitter:description", content: "1 dia de conteúdo prático para médicos-empresários. R$ 197 — vagas limitadas." },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" as const },
       {
         rel: "stylesheet",
         href: appCss,
@@ -106,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
