@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, createContext, useContext } from "react";
 import heroBg from "@/assets/bg.png";
-import fpnLogo from "@/assets/FPN HEALTH BRANCA.png";
+import fpnLogo from "@/assets/fpn-logo.png";
 import heroBgMobile from "@/assets/celular.png";
 import mentorEvandro from "@/assets/fpn/mentors/mentor-evandro.jpg";
 import mentorTiago from "@/assets/fpn/mentors/mentor-tiago.jpg";
@@ -228,7 +228,7 @@ function UrgencyBar() {
   return (
     <div className="sticky top-0 z-50 border-b border-white/10 bg-black/40 py-2.5 text-center text-[0.65rem] backdrop-blur-md sm:text-xs">
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 px-4 font-medium uppercase tracking-[0.22em] text-white/85">
-        <img src={fpnLogo} alt="FPN Health" className="h-11 w-auto scale-[1.8] sm:h-12 sm:scale-[2]" />
+        <img src={fpnLogo} alt="FPN Health" className="h-7 w-auto sm:h-8" />
         <span className="h-2.5 w-px bg-white/15" />
         <span className="flex items-center gap-2">
           <Calendar className="h-3 w-3 text-[var(--teal-light)]" strokeWidth={1.5} />
@@ -1055,7 +1055,7 @@ function Footer() {
   return (
     <footer className="bg-section-a border-t border-white/10 py-14">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center lg:px-10">
-        <img src={fpnLogo} alt="FPN Health" className="h-20 w-auto scale-[1.8] sm:h-24 sm:scale-[2]" />
+        <img src={fpnLogo} alt="FPN Health" className="h-14 w-auto sm:h-16" />
         <p className="text-[0.7rem] uppercase tracking-[0.25em] text-foreground/55">
           Growth Day 2025 · 06 jun · Alphaville · Barueri/SP
         </p>
