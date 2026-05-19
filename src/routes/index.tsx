@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, createContext, useContext } from "react";
 import heroBg from "@/assets/bg.png";
-import fpnLogo from "@/assets/fpn-logo.png";
 import heroBgMobile from "@/assets/celular.png";
 import mentorEvandro from "@/assets/fpn/mentors/mentor-evandro.jpg";
 import mentorTiago from "@/assets/fpn/mentors/mentor-tiago.jpg";
@@ -12,7 +11,6 @@ import {
   Calendar,
   MapPin,
   Clock,
-  Users,
   Check,
   ChevronDown,
   Target,
@@ -20,7 +18,6 @@ import {
   Megaphone,
   DollarSign,
   Brain,
-  Award,
   X,
   Loader2,
 } from "lucide-react";
@@ -28,17 +25,17 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Growth Day FPN Health — 06 de junho · Alphaville/SP" },
+      { title: "Growth Day FPN Health · 06 de junho · Alphaville/SP" },
       {
         name: "description",
         content:
-          "1 dia para começar a tratar sua clínica como negócio. Posicionamento, processo comercial, marketing e gestão para médicos. Vagas limitadas — R$ 197.",
+          "1 dia para começar a tratar sua clínica como negócio. Posicionamento, processo comercial, marketing e gestão para médicos. Vagas limitadas por R$ 197.",
       },
-      { property: "og:title", content: "Growth Day FPN Health — 06/06/2025" },
+      { property: "og:title", content: "Growth Day FPN Health · 06/06/2026" },
       {
         property: "og:description",
         content:
-          "Evento presencial em Alphaville. Médicos que querem parar de trabalhar muito e lucrar pouco.",
+          "Evento presencial em Alphaville. Para médicos que querem parar de trabalhar muito e lucrar pouco.",
       },
     ],
   }),
@@ -228,8 +225,6 @@ function UrgencyBar() {
   return (
     <div className="sticky top-0 z-50 border-b border-white/10 bg-black/40 py-2.5 text-center text-[0.65rem] backdrop-blur-md sm:text-xs">
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 px-4 font-medium uppercase tracking-[0.22em] text-white/85">
-        <img src={fpnLogo} alt="FPN Health" className="h-7 w-auto sm:h-8" />
-        <span className="h-2.5 w-px bg-white/15" />
         <span className="flex items-center gap-2">
           <Calendar className="h-3 w-3 text-[var(--teal-light)]" strokeWidth={1.5} />
           06 jun
@@ -280,20 +275,21 @@ function Hero() {
           </div>
 
           <h1 className="text-balance text-[2rem] font-light leading-[1.05] tracking-[-0.02em] text-white sm:text-[2.2rem] lg:text-[2.8rem] xl:text-[3.1rem]">
-            O dia em que você começa a tratar sua{" "}
+            Em 1 dia, você aprende como parar de ser o{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
-              clínica
+              gargalo
             </span>{" "}
-            como{" "}
+            da sua clínica e começa a tratá-la como um{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
-              negócio
+              negócio real
             </span>
             .
           </h1>
 
           <p className="mt-6 max-w-md text-sm font-light leading-relaxed text-white/80 sm:text-base">
-            Um dia presencial em Alphaville. Posicionamento, processo comercial,
-            marketing e gestão — sem teoria, com aplicação prática.
+            Você foi formado para ser um excelente médico. Ninguém te ensinou a
+            gerir, vender e crescer uma clínica. O Growth Day existe para corrigir
+            isso em um único dia intenso, com quem já fez.
           </p>
 
           <div className="mt-[22px] flex flex-col items-start gap-4 sm:flex-row sm:items-center">
@@ -303,12 +299,12 @@ function Hero() {
           <div className="mt-10 hidden flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/15 pt-6 text-xs md:flex">
             <div className="flex items-center gap-2 text-white/85">
               <Calendar className="h-3.5 w-3.5 text-[var(--teal-light)]" strokeWidth={1.5} />
-              <span className="font-medium tracking-wide">06 jun 2025</span>
+              <span className="font-medium tracking-wide">06 jun 2026</span>
             </div>
             <div className="h-3 w-px bg-white/20" />
             <div className="flex items-center gap-2 text-white/85">
               <Clock className="h-3.5 w-3.5 text-[var(--teal-light)]" strokeWidth={1.5} />
-              <span className="font-medium tracking-wide">09h — 18h</span>
+              <span className="font-medium tracking-wide">17h às 22h</span>
             </div>
             <div className="h-3 w-px bg-white/20" />
             <div className="flex items-center gap-2 text-white/85">
@@ -396,10 +392,10 @@ const MARQUEE_EXPERIENCE = [
 
 function PainSection() {
   const pains = [
-    "Você trabalha 12 horas por dia, mas no fim do mês a clínica não sobra dinheiro?",
-    "Sua agenda só roda quando você está presente — sem você, tudo para?",
-    "Os leads que chegam só perguntam preço e somem depois do orçamento?",
-    "Você sente que sua autoridade técnica não está sendo traduzida em receita?",
+    "Você fatura bem no papel, mas o caixa nunca aparece?",
+    "Seus leads só perguntam preço e somem depois do orçamento?",
+    "Você é bom médico, mas não sabe como crescer sem trabalhar mais horas?",
+    "Sua clínica para quando você para?",
   ];
   const headingRef = useScrollReveal<HTMLDivElement>();
   const listRef = useScrollReveal<HTMLDivElement>();
@@ -410,14 +406,14 @@ function PainSection() {
       <div className="relative mx-auto max-w-4xl px-6 lg:px-10">
         <div ref={headingRef} className="scroll-reveal max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            01 — Diagnóstico
+            01 · Diagnóstico
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
-            Se você é médico, provavelmente já passou por{" "}
+            Se você se identifica com alguma{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
-              uma dessas situações
+              dessas situações
             </span>
-            .
+            , o Growth Day foi feito para você.
           </h2>
         </div>
         <div ref={listRef} className="scroll-reveal-stagger mt-16 divide-y divide-white/10 border-y border-white/10">
@@ -435,10 +431,18 @@ function PainSection() {
             </div>
           ))}
         </div>
-        <p className="mt-14 max-w-2xl text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
-          O Growth Day existe para mudar isso —{" "}
-          <span className="font-display italic text-foreground">em um único dia</span>.
-        </p>
+        <div className="mt-14 max-w-2xl space-y-5 text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+          <p>
+            Esses não são problemas de esforço.{" "}
+            <span className="font-display italic text-foreground">São problemas de modelo.</span>
+          </p>
+          <p>
+            Um médico sobrecarregado que não tem processo comercial,
+            posicionamento e gestão financeira pode triplicar o faturamento e
+            ainda assim não construir patrimônio. É exatamente esse ciclo que
+            vamos quebrar no Growth Day.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -455,20 +459,25 @@ function WhatIs() {
         <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-24">
           <div ref={textRef} className="scroll-reveal">
             <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-              02 — O que é o Growth Day
+              02 · O que é o Growth Day
             </span>
             <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
-              O ponto de virada para o médico que quer construir{" "}
+              O dia em que a sua clínica começa a tratar você como{" "}
               <span className="font-display font-medium italic text-[var(--teal-light)]">
-                um negócio sólido
+                sócio
               </span>
-              .
+              , não como funcionário.
             </h2>
             <p className="mt-8 max-w-xl text-base font-light leading-relaxed text-foreground/75 sm:text-lg">
-              Um dia presencial em Alphaville, com 4 a 6 horas de conteúdo direto ao
-              ponto, conduzido por mentores que já construíram clínicas e empresas de 9
-              dígitos. Sem teoria genérica. Sem promessa fácil. Aplicação prática para
-              você sair com clareza do que precisa fazer na segunda-feira.
+              O Growth Day é um evento presencial de um dia promovido pela FPN
+              Health, em Alphaville. São 4 a 6 horas de conteúdo direto ao ponto,
+              com especialistas que já construíram e ainda constroem negócios
+              reais dentro do mercado médico.
+            </p>
+            <p className="mt-5 max-w-xl text-base font-light leading-relaxed text-foreground/75 sm:text-lg">
+              Não é mais uma palestra teórica. É uma jornada estruturada para
+              que você saia com clareza sobre o que está travando sua clínica e
+              qual é o próximo passo concreto para mudar isso.
             </p>
             <div className="mt-10 flex justify-start">
               <CTAButton>Garantir minha vaga</CTAButton>
@@ -477,7 +486,7 @@ function WhatIs() {
           <div ref={statsRef} className="scroll-reveal-stagger grid grid-cols-2 border border-white/10">
             {[
               { n: "1", l: "dia presencial" },
-              { n: "4—6h", l: "de conteúdo" },
+              { n: "4 a 6h", l: "de conteúdo" },
               { n: "5+", l: "palestrantes" },
               { n: "R$ 197", l: "ingresso único" },
             ].map((s, i) => (
@@ -506,45 +515,38 @@ function Themes() {
   const themes = [
     {
       icon: Target,
-      title: "Posicionamento digital",
+      title: "Posicionamento digital e autoridade médica nas redes",
       desc: "Como construir autoridade médica online sem virar influenciador.",
       detail:
-        "Construa uma presença digital que reflete a sua autoridade técnica — sem virar entretenimento. Vamos mostrar como definir um nicho claro, comunicar valor para o paciente certo e criar uma marca pessoal que sustenta preço alto e atrai os casos que você realmente quer atender.",
+        "Construa uma presença digital que reflete a sua autoridade técnica, sem virar entretenimento. Vamos mostrar como definir um nicho claro, comunicar valor para o paciente certo e criar uma marca pessoal que sustenta preço alto e atrai os casos que você realmente quer atender.",
     },
     {
       icon: TrendingUp,
-      title: "Processo comercial",
-      desc: "Converter pacientes sem depender de desconto nem improviso.",
+      title: "Processo comercial: converter sem depender de desconto",
+      desc: "Como transformar orçamento em paciente fechado, com previsibilidade.",
       detail:
-        "Um processo comercial bem desenhado triplica conversão sem aumentar o investimento em mídia. Você vai sair com um playbook de qualificação de lead, script de atendimento e gatilhos de fechamento — testado em mais de 350 clínicas atendidas.",
+        "Um processo comercial bem desenhado triplica conversão sem aumentar o investimento em mídia. Você vai sair com um playbook de qualificação de lead, script de atendimento e gatilhos de fechamento, testado em mais de 350 clínicas atendidas.",
     },
     {
       icon: Megaphone,
-      title: "Marketing estratégico",
-      desc: "Tráfego pago e conteúdo que atraem o paciente certo.",
+      title: "Marketing estratégico para médicos",
+      desc: "O que realmente funciona em 2026.",
       detail:
         "Anúncios que selecionam pacientes de alto valor, conteúdo orgânico que reforça autoridade e CRM que recupera leads frios. Sem cair na armadilha do desconto: marketing como motor de previsibilidade, não de promessa.",
     },
     {
       icon: DollarSign,
-      title: "Gestão financeira",
-      desc: "Saber quanto sua clínica realmente lucra — e como escalar.",
+      title: "Gestão financeira básica",
+      desc: "Sair do ciclo de faturar muito e guardar pouco.",
       detail:
-        "Indicadores que importam: CAC, LTV, ticket médio, margem por procedimento. Você vai aprender a separar o caixa do médico do caixa da clínica, definir pró-labore, reinvestimento e quando — e como — escalar sem perder margem.",
+        "Indicadores que importam: CAC, LTV, ticket médio, margem por procedimento. Você vai aprender a separar o caixa do médico do caixa da clínica, definir pró-labore, reinvestimento e como escalar sem perder margem.",
     },
     {
       icon: Brain,
-      title: "Mentalidade médico-empresário",
-      desc: "Sair do operacional e ocupar o lugar de dono do negócio.",
+      title: "Mentalidade de médico-empresário",
+      desc: "Os fundamentos de quem escala uma clínica.",
       detail:
-        "A transição mental mais difícil: parar de pensar como o melhor profissional da clínica e começar a pensar como o dono. Decisões estratégicas, delegação real, e os erros mais comuns que mantêm o médico preso na operação por anos.",
-    },
-    {
-      icon: Award,
-      title: "Estruturação de equipe",
-      desc: "Tornar a clínica independente da sua presença diária.",
-      detail:
-        "Recepção, gestores de tráfego, vendedoras, médicos associados. Como contratar, treinar e remunerar uma equipe que entrega resultado consistente, com processos claros e indicadores que você acompanha sem precisar estar lá todos os dias.",
+        "A transição mental mais difícil: parar de pensar como o melhor profissional da clínica e começar a pensar como o dono. Decisões estratégicas, delegação real e os erros mais comuns que mantêm o médico preso na operação por anos.",
     },
   ];
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -557,7 +559,7 @@ function Themes() {
       <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
         <div ref={headRef} className="scroll-reveal max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            03 — Temas
+            03 · Temas
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
             O que você vai aprender no{" "}
@@ -619,6 +621,19 @@ function Themes() {
             );
           })}
         </div>
+
+        <div className="mt-14 border border-white/10 bg-white/[0.02] p-7 sm:p-9">
+          <div className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[var(--teal-light)]">
+            Atenção
+          </div>
+          <p className="mt-4 text-base font-light leading-relaxed text-foreground/75 sm:text-lg">
+            O Growth Day cobre esses temas em formato introdutório e
+            estratégico. O aprofundamento completo, com diagnóstico individual,
+            plano de ação e playbook, acontece na Imersão FPN Health nos dias
+            10 e 11 de julho. Os dois eventos são complementares, não
+            concorrentes.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -628,26 +643,26 @@ function Speakers() {
   const speakers = [
     {
       name: "Evandro Guedes",
-      role: "Empresário",
-      bio: "14 empresas fundadas. R$ 1,4 bi em faturamento acumulado. Cases de fusão e venda aplicados ao mercado médico.",
+      role: "Empresário · Fundador de 14 empresas",
+      bio: "R$ 1,4 bilhão em faturamento acumulado. Construiu e vendeu múltiplos negócios ao longo de 20 anos. Mostra que uma clínica médica é um negócio como qualquer outro e pode ser escalado como tal.",
       photo: mentorEvandro,
     },
     {
       name: "Dr. Tiago Simão",
-      role: "Cirurgião Plástico · CRM 137.398",
-      bio: "1º lugar no Título SBCP. Fellowships nos EUA, Turquia e Colômbia. Especialista em Lipo HD e Contorno Corporal.",
+      role: "Cirurgião Plástico · CRM 137.398 · RQE 54367",
+      bio: "1º lugar no concurso nacional de Título de Especialista da SBCP. Membro Pleno da SBCP. Fellowships nos EUA, Turquia e Colômbia. Especialista em Lipoaspiração HD e Contorno Corporal.",
       photo: mentorTiago,
     },
     {
       name: "Dr. Marcelo Nogueira",
       role: "Transplante Capilar · CRM SP 202.888",
-      bio: "Criador do Método DVN. +1.500 transplantes, +350 médicos formados. Destaque em Veja, O Globo e IsToÉ.",
+      bio: "Criador do Método DVN, técnica exclusiva no Brasil. Mais de 1.500 transplantes realizados. Formou mais de 350 médicos. Destaque em Veja, O Globo e IsToÉ.",
       photo: mentorMarcelo,
     },
     {
       name: "Felipe Muzitano",
       role: "CEO Side Growth · Marketing e Vendas",
-      bio: "+350 clínicas assessoradas. Especialista em processo comercial e marketing digital para o mercado médico.",
+      bio: "Mais de 350 clínicas assessoradas. Traduz estratégias de empresas de alto crescimento para a realidade do consultório médico, sem jargão e sem atalho.",
       photo: mentorFelipe,
     },
   ];
@@ -660,7 +675,7 @@ function Speakers() {
       <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
         <div ref={headRef} className="scroll-reveal max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            04 — Mentores
+            04 · Palestrantes
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
             Mentores que{" "}
@@ -736,12 +751,11 @@ function Speakers() {
 
 function Offer() {
   const includes = [
-    "1 dia completo de imersão presencial em Alphaville",
-    "4 a 6 horas de conteúdo com 4+ palestrantes",
-    "Material de apoio digital exclusivo do evento",
-    "Networking com médicos e empresários de alto nível",
-    "Coffee breaks ao longo do dia",
-    "Certificado de participação Growth Day FPN Health",
+    "Acesso a 1 dia completo de conteúdo",
+    "Múltiplos palestrantes especializados",
+    "Material de apoio impresso",
+    "Coffee break e networking exclusivo",
+    "Certificado de participação",
   ];
   const cardRef = useScrollReveal<HTMLDivElement>();
   return (
@@ -751,7 +765,7 @@ function Offer() {
       <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
         <div className="mb-12 max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            05 — Sua vaga
+            05 · Sua vaga
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
             Um ingresso.{" "}
@@ -825,7 +839,7 @@ function Logistics() {
       <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
         <div ref={headRef} className="scroll-reveal max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            06 — Logística
+            06 · Logística
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
             Onde e{" "}
@@ -838,8 +852,8 @@ function Logistics() {
 
         <div ref={gridRef} className="scroll-reveal-stagger mt-16 grid border-t border-white/10 sm:grid-cols-3">
           {[
-            { i: Calendar, t: "Data", v: "06 jun 2025", s: "Sexta-feira" },
-            { i: Clock, t: "Horário", v: "09h — 18h", s: "Credenciamento 08h30" },
+            { i: Calendar, t: "Data", v: "06 jun 2026", s: "Sábado" },
+            { i: Clock, t: "Horário", v: "17h às 22h", s: "Credenciamento a partir das 17h" },
             {
               i: MapPin,
               t: "Local",
@@ -874,20 +888,20 @@ function Logistics() {
 function FAQ() {
   const items = [
     {
-      q: "Para quem é o Growth Day?",
-      a: "Médicos que têm ou querem montar clínica própria — independente da especialidade. Cirurgiões plásticos, dermatologistas estéticos e médicos de qualquer área que queiram estruturar a clínica como negócio.",
+      q: "O Growth Day é para médicos de qual especialidade?",
+      a: "Para qualquer médico que tem ou quer ter clínica própria. O conteúdo é especialmente relevante para quem atua com estética avançada, cirurgia plástica, transplante capilar e harmonização facial. Os princípios se aplicam a qualquer especialidade.",
     },
     {
-      q: "Qual a diferença entre o Growth Day e a Imersão FPN Health?",
-      a: "O Growth Day é uma introdução prática de 1 dia aos principais temas. A Imersão FPN Health, em julho, é o aprofundamento completo, com plano de ação, diagnóstico e playbook personalizado.",
+      q: "O Growth Day é diferente da Imersão de julho?",
+      a: "Sim. O Growth Day aborda os fundamentos em um dia, com múltiplos palestrantes e visão estratégica. A Imersão FPN Health (10 e 11 de julho) é o aprofundamento completo: diagnóstico individual da sua clínica, plano de ação personalizado e playbook para os próximos 12 meses. Os dois eventos são complementares e não substituem um ao outro.",
     },
     {
-      q: "Como funciona o pagamento?",
-      a: "Pelo Hubla — plataforma 100% segura. Você pode pagar à vista no Pix/cartão ou parcelar no cartão de crédito.",
+      q: "E se eu não puder comparecer depois de comprar?",
+      a: "Consulte a política de cancelamento e transferência no momento da compra, disponível na plataforma Hubla. Em caso de dúvidas, entre em contato diretamente com nossa equipe pelo WhatsApp.",
     },
     {
-      q: "Posso pedir reembolso?",
-      a: "Sim. Garantimos reembolso integral em até 7 dias após a compra, conforme o Código de Defesa do Consumidor.",
+      q: "Por que o ingresso está com desconto?",
+      a: "Este é o lote de lançamento, disponível por tempo limitado enquanto houver vagas. Assim que esgotar, o valor retorna a R$ 297, e o evento pode lotar antes disso. Garantir agora é a decisão mais econômica.",
     },
   ];
   const [open, setOpen] = useState<number | null>(0);
@@ -900,7 +914,7 @@ function FAQ() {
       <div className="relative mx-auto max-w-4xl px-6 lg:px-10">
         <div ref={headRef} className="scroll-reveal max-w-3xl">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            07 — Perguntas
+            07 · Perguntas
           </span>
           <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
             Ainda em{" "}
@@ -976,7 +990,7 @@ function FinalCTA() {
       >
         <div className="mx-auto max-w-3xl text-center">
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
-            08 — Última chamada
+            08 · Última chamada
           </span>
 
           <div className="mt-6 inline-flex items-center gap-3 border border-white/20 bg-white/[0.03] px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/85 backdrop-blur-sm">
@@ -985,17 +999,26 @@ function FinalCTA() {
           </div>
 
           <h2 className="mt-8 text-balance text-4xl font-light leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-[4.25rem]">
-            Em 06 de junho, sua clínica pode começar a operar como{" "}
+            O custo de não ir não é R$ 197.{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
-              um negócio de verdade
+              É mais um semestre tratando sua clínica como hobby.
             </span>
-            .
           </h2>
 
           <p className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-white/70 sm:text-lg">
-            Não deixe para o próximo evento. As vagas presenciais são limitadas
-            pelo espaço físico em Alphaville.
+            06 de junho de 2026 · Alphaville, Barueri/SP. Vagas limitadas.
+            Quando esgotar, não haverá lista de espera.
           </p>
+
+          <div className="mx-auto mt-10 max-w-xl space-y-3 border-l-2 border-[var(--teal-light)]/60 pl-5 text-left text-base font-light leading-relaxed text-white/80 sm:text-lg">
+            <p>
+              O médico que vai ao Growth Day em junho chega à Imersão de julho
+              com vantagem.
+            </p>
+            <p>
+              O médico que fica em casa segue exatamente onde estava.
+            </p>
+          </div>
         </div>
 
         <div
@@ -1011,7 +1034,7 @@ function FinalCTA() {
               Data
             </div>
             <div className="mt-1 font-display text-lg font-light tracking-tight text-white">
-              06 jun 2025
+              06 jun 2026
             </div>
           </div>
           <div className="border-b border-white/10 px-6 py-8 text-center sm:border-b-0 sm:border-r">
@@ -1055,12 +1078,11 @@ function Footer() {
   return (
     <footer className="bg-section-a border-t border-white/10 py-14">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center lg:px-10">
-        <img src={fpnLogo} alt="FPN Health" className="h-14 w-auto sm:h-16" />
         <p className="text-[0.7rem] uppercase tracking-[0.25em] text-foreground/55">
-          Growth Day 2025 · 06 jun · Alphaville · Barueri/SP
+          Growth Day 2026 · 06 jun · Alphaville · Barueri/SP
         </p>
         <p className="mt-2 text-[0.65rem] uppercase tracking-[0.22em] text-foreground/35">
-          © {new Date().getFullYear()} FPN Health — Todos os direitos reservados
+          © {new Date().getFullYear()} FPN Health · Todos os direitos reservados
         </p>
       </div>
     </footer>
