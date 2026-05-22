@@ -54,7 +54,7 @@ declare global {
   }
 }
 
-// Parâmetros de rastreamento que queremos repassar ao CRM.
+// Chaves conhecidas — garantidas no payload (vazias se ausentes) para schema estável no CRM.
 const UTM_KEYS = [
   "utm_source",
   "utm_medium",
@@ -64,39 +64,56 @@ const UTM_KEYS = [
   "fbclid",
   "gclid",
 ] as const;
-const UTM_STORAGE_KEY = "growthday_utms";
+const ALL_PARAMS_STORAGE_KEY = "growthday_all_params";
+const LEGACY_UTM_STORAGE_KEY = "growthday_utms";
 
-// Captura as UTMs da URL e persiste na sessão. Usa atribuição de primeiro toque:
-// uma vez capturada, a UTM não é sobrescrita se o usuário recarregar sem os parâmetros.
+// Captura TODOS os parâmetros da URL (não apenas UTMs) e persiste na sessão.
+// Atribuição de primeiro toque: valores capturados não são sobrescritos em recargas.
 function captureUTMParams(): Record<string, string> {
-  if (typeof window === "undefined") return {};
+  if (typeof window === "undefined") {
+    const empty: Record<string, string> = {};
+    for (const key of UTM_KEYS) empty[key] = "";
+    return empty;
+  }
+
   let stored: Record<string, string> = {};
   try {
-    stored = JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
+    stored = JSON.parse(sessionStorage.getItem(ALL_PARAMS_STORAGE_KEY) || "{}");
   } catch {
     stored = {};
   }
+  // Compatibilidade com versão anterior que só guardava UTMs
+  try {
+    const legacy = JSON.parse(sessionStorage.getItem(LEGACY_UTM_STORAGE_KEY) || "{}");
+    for (const [k, v] of Object.entries(legacy)) {
+      if (typeof v === "string" && v && !stored[k]) stored[k] = v;
+    }
+  } catch {
+    /* ignore */
+  }
+
+  // Mescla com a URL atual — primeiro toque vence
   const params = new URLSearchParams(window.location.search);
   let updated = false;
-  for (const key of UTM_KEYS) {
-    const value = params.get(key);
+  params.forEach((value, key) => {
     if (value && !stored[key]) {
       stored[key] = value;
       updated = true;
     }
-  }
+  });
+
   if (updated) {
     try {
-      sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(stored));
+      sessionStorage.setItem(ALL_PARAMS_STORAGE_KEY, JSON.stringify(stored));
     } catch {
-      /* sessionStorage indisponível — segue sem persistir */
+      /* sessionStorage indisponível */
     }
   }
-  // Retorna SEMPRE todas as chaves (vazias quando ausentes) para que o mapeamento
-  // no n8n/CRM tenha um schema estável e não quebre com campos indefinidos.
-  const result: Record<string, string> = {};
+
+  // Garante presença de todas as chaves UTM conhecidas (mesmo vazias)
+  const result: Record<string, string> = { ...stored };
   for (const key of UTM_KEYS) {
-    result[key] = stored[key] ?? "";
+    if (!(key in result)) result[key] = "";
   }
   return result;
 }
