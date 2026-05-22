@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 import heroBg from "@/assets/bg.png";
 import heroBgMobile from "@/assets/celular.png";
 import mentorEvandro from "@/assets/fpn/mentors/mentor-evandro.jpg";
@@ -54,6 +54,53 @@ declare global {
   }
 }
 
+// Parâmetros de rastreamento que queremos repassar ao CRM.
+const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "fbclid",
+  "gclid",
+] as const;
+const UTM_STORAGE_KEY = "growthday_utms";
+
+// Captura as UTMs da URL e persiste na sessão. Usa atribuição de primeiro toque:
+// uma vez capturada, a UTM não é sobrescrita se o usuário recarregar sem os parâmetros.
+function captureUTMParams(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  let stored: Record<string, string> = {};
+  try {
+    stored = JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
+  } catch {
+    stored = {};
+  }
+  const params = new URLSearchParams(window.location.search);
+  let updated = false;
+  for (const key of UTM_KEYS) {
+    const value = params.get(key);
+    if (value && !stored[key]) {
+      stored[key] = value;
+      updated = true;
+    }
+  }
+  if (updated) {
+    try {
+      sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(stored));
+    } catch {
+      /* sessionStorage indisponível — segue sem persistir */
+    }
+  }
+  // Retorna SEMPRE todas as chaves (vazias quando ausentes) para que o mapeamento
+  // no n8n/CRM tenha um schema estável e não quebre com campos indefinidos.
+  const result: Record<string, string> = {};
+  for (const key of UTM_KEYS) {
+    result[key] = stored[key] ?? "";
+  }
+  return result;
+}
+
 const LeadModalContext = createContext<{ open: () => void }>({ open: () => {} });
 
 function CTAButton({
@@ -71,7 +118,7 @@ function CTAButton({
       type="button"
       onClick={open}
       className={`group inline-flex items-center justify-center gap-3 border border-[var(--teal-light)] bg-[var(--teal-light)] font-semibold uppercase tracking-[0.18em] text-[#091b3a] transition-all duration-300 hover:bg-transparent hover:text-[var(--teal-light)] hover:shadow-[var(--shadow-glow)] ${
-        size === "lg" ? "px-9 py-4 text-xs sm:text-sm" : "px-6 py-3 text-[0.7rem]"
+        size === "lg" ? "px-7 py-3.5 text-[0.7rem] sm:text-xs" : "px-6 py-3 text-[0.7rem]"
       } ${pulse ? "cta-pulse" : ""}`}
     >
       {children}
@@ -102,20 +149,25 @@ function LeadModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
       return;
     }
     setLoading(true);
+    const utms = captureUTMParams();
+    const payload = {
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      source: "growth-day-landing",
+      event: "Growth Day FPN Health",
+      fb_access_token: FB_TOKEN,
+      submitted_at: new Date().toISOString(),
+      ...utms,
+      landing_url: window.location.href,
+    };
     try {
       window.fbq?.("track", "Lead", { content_name: "Growth Day FPN Health" });
       await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
-          source: "growth-day-landing",
-          event: "Growth Day FPN Health",
-          fb_access_token: FB_TOKEN,
-          submitted_at: new Date().toISOString(),
-        }),
+        keepalive: true,
+        body: JSON.stringify(payload),
       });
     } catch (err) {
       console.error("Webhook submit failed", err);
@@ -247,17 +299,30 @@ function UrgencyBar() {
 function Hero() {
   return (
     <section className="relative isolate flex min-h-[125vh] flex-col overflow-hidden bg-[#07182f] md:min-h-screen">
+      {/* Mobile: foto dos mentores como fundo full-bleed */}
       <div
-        className="absolute inset-0 bg-center bg-cover bg-no-repeat md:hidden"
+        className="absolute inset-0 bg-top bg-cover bg-no-repeat md:hidden"
         style={{ backgroundImage: `url(${heroBgMobile})` }}
         aria-hidden="true"
       />
+      {/* Desktop: foto dos mentores como fundo full-bleed */}
       <div
         className="absolute inset-0 hidden bg-center bg-cover bg-no-repeat md:block"
         style={{ backgroundImage: `url(${heroBg})` }}
         aria-hidden="true"
       />
 
+      {/* Mobile: scrim escuro atrás do texto (topo) que dissolve sobre os palestrantes */}
+      <div
+        className="pointer-events-none absolute inset-0 md:hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(7,24,47,0.95) 0%, rgba(7,24,47,0.88) 20%, rgba(7,24,47,0.5) 36%, rgba(7,24,47,0.08) 50%, transparent 62%)",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Degradê inferior para transição suave */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-44 lg:h-56"
         style={{
@@ -267,14 +332,14 @@ function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-12 pt-5 sm:px-6 sm:pt-10 lg:px-8 lg:pt-16">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-12 pt-6 sm:px-6 sm:pt-10 lg:px-8 lg:pt-16">
         <div className="max-w-xl">
-          <div className="mb-8 inline-flex items-center gap-3 border border-white/25 bg-white/[0.04] px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/90 backdrop-blur-sm">
+          <div className="mb-4 inline-flex items-center gap-3 border border-white/25 bg-white/[0.04] px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/90 backdrop-blur-sm">
             <span className="dot-pulse h-1 w-1 rounded-full bg-[var(--teal-light)]" />
             06 jun · Alphaville · SP
           </div>
 
-          <h1 className="text-balance text-[2rem] font-light leading-[1.05] tracking-[-0.02em] text-white sm:text-[2.2rem] lg:text-[2.8rem] xl:text-[3.1rem]">
+          <h1 className="text-balance text-[1.7rem] font-light leading-[1.08] tracking-[-0.02em] text-white sm:text-[1.9rem] lg:text-[2.4rem] xl:text-[2.7rem]">
             Em 1 dia, você aprende como parar de ser o{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               gargalo
@@ -286,13 +351,13 @@ function Hero() {
             .
           </h1>
 
-          <p className="mt-6 max-w-md text-sm font-light leading-relaxed text-white/80 sm:text-base">
+          <p className="mt-3 max-w-md text-sm font-light leading-relaxed text-white/80 sm:mt-6 sm:text-base">
             Você foi formado para ser um excelente médico. Ninguém te ensinou a
             gerir, vender e crescer uma clínica. O Growth Day existe para corrigir
             isso em um único dia intenso, com quem já fez.
           </p>
 
-          <div className="mt-[22px] flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="mt-2 flex flex-col items-start gap-4 sm:mt-4 sm:flex-row sm:items-center">
             <CTAButton pulse>Garantir vaga · R$ 197</CTAButton>
           </div>
 
@@ -408,7 +473,7 @@ function PainSection() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             01 · Diagnóstico
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             Se você se identifica com alguma{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               dessas situações
@@ -461,7 +526,7 @@ function WhatIs() {
             <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
               02 · O que é o Growth Day
             </span>
-            <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+            <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
               O dia em que a sua clínica começa a tratar você como{" "}
               <span className="font-display font-medium italic text-[var(--teal-light)]">
                 sócio
@@ -561,7 +626,7 @@ function Themes() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             03 · Temas
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             O que você vai aprender no{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               Growth Day
@@ -677,7 +742,7 @@ function Speakers() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             04 · Palestrantes
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             Mentores que{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               construíram
@@ -767,7 +832,7 @@ function Offer() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             05 · Sua vaga
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             Um ingresso.{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               Um dia que muda o jogo
@@ -841,7 +906,7 @@ function Logistics() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             06 · Logística
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             Onde e{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               quando
@@ -916,7 +981,7 @@ function FAQ() {
           <span className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-[var(--teal-light)]">
             07 · Perguntas
           </span>
-          <h2 className="mt-5 text-balance text-3xl font-light leading-[1.05] tracking-tight sm:text-4xl lg:text-[3.25rem]">
+          <h2 className="mt-3 text-balance text-xl font-light leading-[1.15] tracking-tight sm:text-2xl lg:text-[2.3rem]">
             Ainda em{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               dúvida
@@ -998,7 +1063,7 @@ function FinalCTA() {
             Últimas vagas
           </div>
 
-          <h2 className="mt-8 text-balance text-4xl font-light leading-[1.02] tracking-tight text-white sm:text-5xl lg:text-[4.25rem]">
+          <h2 className="mt-6 text-balance text-2xl font-light leading-[1.1] tracking-tight text-white sm:text-3xl lg:text-[2.9rem]">
             O custo de não ir não é R$ 197.{" "}
             <span className="font-display font-medium italic text-[var(--teal-light)]">
               É mais um semestre tratando sua clínica como hobby.
@@ -1091,6 +1156,10 @@ function Footer() {
 
 function GrowthDayLanding() {
   const [modalOpen, setModalOpen] = useState(false);
+  // Captura as UTMs logo no carregamento, antes de qualquer navegação interna.
+  useEffect(() => {
+    captureUTMParams();
+  }, []);
   return (
     <LeadModalContext.Provider value={{ open: () => setModalOpen(true) }}>
       <main className="min-h-screen bg-background text-foreground">
